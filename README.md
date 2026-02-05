@@ -4,6 +4,9 @@ A Model Context Protocol (MCP) server for App Store Optimization (ASO) research 
 
 **Please note:** This MCP is a very early feature-limited prototype and is not yet ready for production use.
 
+Built on top of [google-play-scraper](https://github.com/RankoR/google-play-scraper) - a Python library for scraping
+Google Play Store data.
+
 ## Features
 
 - **Keywords Research** - Get keyword suggestions from Google Play Store autocomplete
@@ -51,7 +54,11 @@ Add to `~/.claude/settings.json`:
   "mcpServers": {
     "aso": {
       "command": "uv",
-      "args": ["run", "python", "server.py"],
+      "args": [
+        "run",
+        "python",
+        "server.py"
+      ],
       "cwd": "/path/to/aso-mcp-python"
     }
   }
@@ -67,7 +74,11 @@ Add to `~/.gemini/settings.json`:
   "mcpServers": {
     "aso": {
       "command": "uv",
-      "args": ["run", "python", "server.py"],
+      "args": [
+        "run",
+        "python",
+        "server.py"
+      ],
       "cwd": "/path/to/aso-mcp-python"
     }
   }
@@ -83,11 +94,13 @@ Add to `~/.gemini/settings.json`:
 Get keyword suggestions for a given seed keyword.
 
 **Parameters:**
+
 - `country` (string) - Country code (e.g., `us`, `de`, `jp`)
 - `language` (string) - Language code (e.g., `en`, `de`, `ja`)
 - `keyword` (string) - Seed keyword or partial keyword
 
 **Example:**
+
 ```
 country: "us"
 language: "en"
@@ -103,6 +116,7 @@ keyword: "calc"
 Validate a title against Google Play's 30 character limit.
 
 **Parameters:**
+
 - `title` (string) - Title to validate
 
 #### `google-play-validate-short-description`
@@ -110,6 +124,7 @@ Validate a title against Google Play's 30 character limit.
 Validate a short description against Google Play's 80 character limit.
 
 **Parameters:**
+
 - `short_description` (string) - Short description to validate
 
 #### `google-play-validate-full-description`
@@ -117,6 +132,7 @@ Validate a short description against Google Play's 80 character limit.
 Validate a full description against Google Play's 4000 character limit.
 
 **Parameters:**
+
 - `full_description` (string) - Full description to validate
 
 **Returns:** Validation result with length, validity status, and any errors.
@@ -138,6 +154,7 @@ Get country codes mapped to their supported languages.
 ## Proxy Configuration
 
 The server supports optional proxy rotation for requests to Google Play. This is useful for:
+
 - Avoiding rate limiting
 - Geographic distribution of requests
 - IP rotation
@@ -157,7 +174,11 @@ export ASO_MCP_PROXIES="http://proxy1:8080,http://proxy2:8080,http://user:pass@p
   "mcpServers": {
     "aso": {
       "command": "uv",
-      "args": ["run", "python", "server.py"],
+      "args": [
+        "run",
+        "python",
+        "server.py"
+      ],
       "cwd": "/path/to/aso-mcp-python",
       "env": {
         "ASO_MCP_PROXIES": "http://proxy1:8080,http://proxy2:8080"
@@ -174,7 +195,11 @@ export ASO_MCP_PROXIES="http://proxy1:8080,http://proxy2:8080,http://user:pass@p
   "mcpServers": {
     "aso": {
       "command": "uv",
-      "args": ["run", "python", "server.py"],
+      "args": [
+        "run",
+        "python",
+        "server.py"
+      ],
       "cwd": "/path/to/aso-mcp-python",
       "env": {
         "ASO_MCP_PROXIES": "http://proxy1:8080,http://proxy2:8080"
@@ -203,22 +228,22 @@ https://username:password@host:port
 
 ## Google Play Metadata Limits
 
-| Field | Character Limit |
-|-------|----------------|
-| Title | 30 |
-| Short Description | 80 |
-| Full Description | 4000 |
+| Field             | Character Limit |
+|-------------------|-----------------|
+| Title             | 30              |
+| Short Description | 80              |
+| Full Description  | 4000            |
 
 ## Supported Countries
 
 The server supports 60+ countries including:
 
-| Region | Countries |
-|--------|-----------|
-| Americas | US, CA, BR, MX |
-| Europe | GB, DE, FR, ES, IT, NL, PL, and more |
-| Asia Pacific | JP, KR, CN, IN, AU, SG, and more |
-| Middle East | SA, IL, TR, and more |
+| Region       | Countries                            |
+|--------------|--------------------------------------|
+| Americas     | US, CA, BR, MX                       |
+| Europe       | GB, DE, FR, ES, IT, NL, PL, and more |
+| Asia Pacific | JP, KR, CN, IN, AU, SG, and more     |
+| Middle East  | SA, IL, TR, and more                 |
 
 Use `get-google-play-countries-with-languages` to get the full mapping of countries to their supported languages.
 
