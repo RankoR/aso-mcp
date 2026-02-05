@@ -1,0 +1,10 @@
+[project]
+name = "aso-mcp-python"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.14"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.26.0",
+    "play-store-scraper-ng>=0.1.5",
+]
