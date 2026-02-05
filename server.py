@@ -10,6 +10,7 @@ from constants.google_play_constants import GOOGLE_PLAY_COUNTRIES, GOOGLE_PLAY_L
 from constants.mcp_constants import MCP_SERVER_INSTRUCTIONS
 from models.google_play import GooglePlayCountryWithLanguages
 from models.metadata import MetadataValidationResult, MetadataValidationError
+from proxy import proxy_manager
 
 mcp = FastMCP(
     name="aso",
@@ -77,12 +78,36 @@ async def google_play_suggest(country: str, language: str, keyword: str) -> List
     :param keyword: Keyword to get suggestions for
     :return: A list of keywords suggestions
     """
-    client = GooglePlayClient(
-        country=country,
-        lang=language,
-    )
+    max_retries = max(len(proxy_manager.available_proxies), 1) if proxy_manager.has_proxies else 1
+    last_error = None
 
-    return await client.asuggest(term=keyword, lang=language, country=country)
+    for attempt in range(max_retries):
+        proxy = proxy_manager.get_random_proxy()
+
+        try:
+            client = GooglePlayClient(
+                country=country,
+                lang=language,
+                proxies=proxy,
+            )
+            result = await client.asuggest(term=keyword, lang=language, country=country)
+            # Success - reset failed proxies for future requests
+            if proxy:
+                proxy_manager.reset_failed()
+            return result
+
+        except Exception as e:
+            last_error = e
+            if proxy:
+                proxy_manager.mark_failed(proxy)
+                logger.warning(f"Request failed with proxy (attempt {attempt + 1}/{max_retries}): {e}")
+            else:
+                # No proxy configured, don't retry
+                raise
+
+    # All proxies failed
+    logger.error(f"All proxy attempts failed. Last error: {last_error}")
+    raise last_error
 
 
 @mcp.tool(
