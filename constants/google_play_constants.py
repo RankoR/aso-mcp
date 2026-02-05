@@ -281,10 +281,7 @@ GOOGLE_PLAY_LANGUAGES: List[str] = list(
     set(lang for item in GOOGLE_PLAY_COUNTRIES_WITH_LANGUAGES for lang in item.language_codes)
 )
 
-#
-# Length constants
-#
-
+# Metadata length limits (not in library)
 MAX_GOOGLE_PLAY_TITLE_LENGTH = 30
 MAX_GOOGLE_PLAY_SHORT_DESCRIPTION_LENGTH = 80
 MAX_GOOGLE_PLAY_FULL_DESCRIPTION_LENGTH = 4000

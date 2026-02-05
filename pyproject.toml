@@ -8,3 +8,10 @@ dependencies = [
     "mcp[cli]>=1.26.0",
     "play-store-scraper-ng>=0.1.5",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-mock>=3.12.0",
+]

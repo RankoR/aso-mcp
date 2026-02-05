@@ -9,6 +9,10 @@ Google Play Store data.
 
 ## Features
 
+- **App Search** - Search for apps by keyword with price filtering
+- **App Details** - Get comprehensive information about any app
+- **App Reviews** - Fetch user reviews with sorting, filtering, and pagination
+- **Collections & Categories** - Browse top free, top paid, and grossing apps by category
 - **Keywords Research** - Get keyword suggestions from Google Play Store autocomplete
 - **Metadata Validation** - Validate titles, short descriptions, and full descriptions against Google Play limits
 - **Country & Language Support** - Access all Google Play supported countries and languages
@@ -33,6 +37,11 @@ uv sync
 
 # Or with pip
 pip install -e .
+
+# Install development dependencies (for testing)
+uv sync --dev
+# Or with pip
+pip install -e ".[dev]"
 ```
 
 ## Usage
@@ -86,6 +95,78 @@ Add to `~/.gemini/settings.json`:
 ```
 
 ## Available Tools
+
+### App Search & Discovery
+
+#### `google-play-search`
+
+Search for apps in Google Play Store by keyword.
+
+**Parameters:**
+
+- `country` (string) - Country code (e.g., `us`, `de`, `jp`)
+- `language` (string) - Language code (e.g., `en`, `de`, `ja`)
+- `term` (string) - Search term
+- `num` (integer, optional) - Number of results (default: 20)
+- `price` (string, optional) - Price filter: "all", "free", or "paid" (default: "all")
+
+**Returns:** List of app overviews with basic info (title, developer, score, etc.)
+
+#### `google-play-list`
+
+Browse Google Play Store collections and categories.
+
+**Parameters:**
+
+- `country` (string) - Country code
+- `language` (string) - Language code
+- `collection` (string) - Collection type: "TOP_FREE", "TOP_PAID", or "GROSSING"
+- `category` (string) - Category (e.g., "APPLICATION", "GAME_ACTION", "PRODUCTIVITY")
+- `num` (integer, optional) - Number of results (default: 50)
+- `age` (string, optional) - Age filter: "AGE_RANGE1" (5 and under), "AGE_RANGE2" (6-8), or "AGE_RANGE3" (9+)
+
+**Available Categories:**
+- General: `APPLICATION`, `GAME`, `FAMILY`
+- App Categories: `BUSINESS`, `EDUCATION`, `ENTERTAINMENT`, `FINANCE`, `HEALTH_AND_FITNESS`, `PRODUCTIVITY`, `TOOLS`, and more
+- Game Categories: `GAME_ACTION`, `GAME_ADVENTURE`, `GAME_PUZZLE`, `GAME_RACING`, `GAME_STRATEGY`, and more
+
+**Returns:** List of app overviews
+
+#### `google-play-app`
+
+Get comprehensive details about a specific app.
+
+**Parameters:**
+
+- `country` (string) - Country code
+- `language` (string) - Language code
+- `app_id` (string) - App package ID (e.g., "com.spotify.music")
+
+**Returns:** Detailed app information including:
+- Basic info (title, developer, summary, descriptions)
+- Ratings (score, reviews count, histogram)
+- Pricing (price, currency, in-app purchases)
+- Install statistics (installs, min/max installs)
+- Media (icon, screenshots, video, header image)
+- Technical details (version, Android version, release/update dates)
+- Contact info (email, website, address)
+- Legal (content rating, privacy policy)
+
+#### `google-play-reviews`
+
+Get user reviews for a specific app with pagination support.
+
+**Parameters:**
+
+- `country` (string) - Country code
+- `language` (string) - Language code
+- `app_id` (string) - App package ID
+- `sort` (string, optional) - Sort order: "newest", "rating", or "helpfulness" (default: "newest")
+- `num` (integer, optional) - Number of reviews (default: 100)
+- `filter_rating` (integer, optional) - Filter by rating (1-5)
+- `continuation_token` (string, optional) - Token for fetching next page
+
+**Returns:** Reviews with user info, rating, text, developer reply (if any), and pagination token for next page
 
 ### Keywords Research
 
@@ -256,12 +337,15 @@ aso-mcp-python/
 ├── server.py                 # Main MCP server
 ├── proxy.py                  # Proxy rotation manager
 ├── constants/
-│   ├── google_play_constants.py  # Countries, languages, limits
+│   ├── google_play_constants.py  # Countries, languages, limits, enums
 │   └── mcp_constants.py          # Server instructions
 ├── models/
-│   ├── google_play.py        # Data models
+│   ├── google_play.py        # Data models (AppDetails, AppOverview, Review)
 │   └── metadata.py           # Validation models
+├── tests/
+│   └── test_server.py        # Comprehensive test suite
 ├── pyproject.toml            # Project configuration
+├── pytest.ini                # Pytest configuration
 └── README.md
 ```
 
@@ -270,6 +354,38 @@ aso-mcp-python/
 - `mcp[cli]` - Model Context Protocol SDK
 - `play-store-scraper-ng` - Google Play Store scraper
 - `httpx` - HTTP client
+
+### Development Dependencies
+
+- `pytest` - Testing framework
+- `pytest-asyncio` - Async test support
+- `pytest-mock` - Mocking support
+
+### Running Tests
+
+```bash
+# Run all tests
+uv run pytest
+
+# Run with coverage
+uv run pytest --cov=. --cov-report=html
+
+# Run specific test file
+uv run pytest tests/test_server.py
+
+# Run specific test
+uv run pytest tests/test_server.py::TestSearch::test_google_play_search_success
+
+# Run with verbose output
+uv run pytest -v
+```
+
+The test suite includes:
+- Unit tests for all tools
+- Mock-based tests (no actual API calls)
+- Proxy rotation and failure scenarios
+- Input validation tests
+- Pagination tests for reviews
 
 ## License
 

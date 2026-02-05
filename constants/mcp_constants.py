@@ -2,54 +2,39 @@ from constants.google_play_constants import MAX_GOOGLE_PLAY_TITLE_LENGTH, MAX_GO
     MAX_GOOGLE_PLAY_FULL_DESCRIPTION_LENGTH
 
 MCP_SERVER_INSTRUCTIONS = f"""
-This server provides tools to perform ASO research in Google Play Store.
+This server provides tools for App Store Optimization (ASO) research in Google Play Store.
 
-## Languages and countries
+## Reference Data
 
-Each request should be sent for the given language and country.
-Please note that Google Play Store's languages and countries codes might be different from the "usual" ones.
+**Localization:**
+- `get-google-play-languages()` - available language codes
+- `get-google-play-countries()` - available country codes
+- `get-google-play-countries-with-languages()` - country codes with their supported languages
 
-- Call `get-google-play-languages()` to get list of available language codes.
-- Call `get-google-play-countries()` to get list of available country codes.
-- Call `get-google-play-countries-with-languages()` to get list of available country codes mapped with languages codes that are used in these countries
+**Enums for API calls:**
+- `get-google-play-collections()` - collection types: TOP_FREE, TOP_PAID, GROSSING
+- `get-google-play-categories()` - app categories: APPLICATION, GAME, GAME_ACTION, etc.
+- `get-google-play-sort-orders()` - review sort orders: NEWEST, RATING, HELPFULNESS
+- `get-google-play-age-filters()` - age filters: FIVE_UNDER, SIX_EIGHT, NINE_UP
+- `get-google-play-rating-filters()` - rating filters: 1-5
 
-## Keywords research
+## App Discovery
 
-Call `google-play-suggest()` to get keywords suggestions for the given keyword.
+- `google-play-search(country, language, term, num?, price?)` - search apps by keyword
+  - `price`: "all", "free", or "paid"
+- `google-play-list(country, language, collection, category, num?, age?)` - browse collections
+- `google-play-app(country, language, app_id)` - get detailed app info
+- `google-play-reviews(country, language, app_id, sort?, num?, filter_rating?, continuation_token?)` - get reviews with pagination
 
-You will need to pass some "seed" keyword (or a part of it) to get suggestions - empty `keyword` will not work.
+## Keywords Research
 
-For example, you're calling it with:
+- `google-play-suggest(country, language, keyword)` - get keyword suggestions
 
-- `country`: `ru`
-- `language`: `ru`
-- `keyword`: `каль` - see, this is not a full keyword, but only a part of it
+Pass a partial or a full keyword to get autocomplete suggestions. Example: "calc" → ["calculator", "calculator pro", ...]
 
-In this case, it will return something like this:
+## Metadata Validation
 
-```
-{{
-"result": [
-    "калькулятор",
-    "калькулятор имт",
-    "калькулятор дробей",
-    "калькулятор калорий",
-    "калькулятор в столбик"
-  ]
-}}
-```
-
-## Data validation
-
-When you're generating metadata for Google Play Store, you can validate it using these methods:
-
-- Call `google-play-validate-title()` to validate title
-- Call `google-play-validate-short-description()` to validate short description
-- Call `google-play-validate-full-description()` to validate full description
-
-Current limitations for metadata on Google Play Store:
-
-- {MAX_GOOGLE_PLAY_TITLE_LENGTH} characters for title
-- {MAX_GOOGLE_PLAY_SHORT_DESCRIPTION_LENGTH} characters for short description
-- {MAX_GOOGLE_PLAY_FULL_DESCRIPTION_LENGTH} characters for full description
+- `google-play-validate-title(title)` - max {MAX_GOOGLE_PLAY_TITLE_LENGTH} chars
+- `google-play-validate-short-description(short_description)` - max {MAX_GOOGLE_PLAY_SHORT_DESCRIPTION_LENGTH} chars
+- `google-play-validate-full-description(full_description)` - max {MAX_GOOGLE_PLAY_FULL_DESCRIPTION_LENGTH} chars
 """
