@@ -10,6 +10,7 @@ from constants.google_play_constants import (
     MAX_GOOGLE_PLAY_FULL_DESCRIPTION_LENGTH,
 )
 from server import (
+    mcp,
     google_play_suggest,
     google_play_search,
     google_play_list,
@@ -459,3 +460,18 @@ class TestValidation:
         result = await google_play_validate_full_description(long_desc)
         assert result.is_valid is False
         assert len(result.errors) == 1
+
+
+class TestMcpRegistration:
+    """Guards the MCPServer wiring — mocked tool tests can't see it."""
+
+    @pytest.mark.asyncio
+    async def test_all_tools_registered_with_schemas(self):
+        tools = await mcp.list_tools()
+        names = {t.name for t in tools}
+        assert "google-play-search" in names
+        assert "google-play-validate-title" in names
+        assert len(names) == 16
+        for t in tools:
+            assert t.description, f"{t.name} has no description"
+            assert t.input_schema, f"{t.name} has no input schema"

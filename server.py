@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from google_play_scraper import GooglePlayClient, Collection, Category, Age, Sort
 from google_play_scraper.models import AppOverview, AppDetails
-from mcp.server import FastMCP
+from mcp.server.mcpserver import MCPServer
 
 from constants.google_play_constants import (
     GOOGLE_PLAY_COUNTRIES,
@@ -18,10 +18,9 @@ from models.google_play import GooglePlayCountryWithLanguages, ReviewsResponse
 from models.metadata import MetadataValidationResult, MetadataValidationError
 from proxy import proxy_manager
 
-mcp = FastMCP(
+mcp = MCPServer(
     name="aso",
     instructions=MCP_SERVER_INSTRUCTIONS,
-    json_response=True,
 )
 
 logging.basicConfig(
