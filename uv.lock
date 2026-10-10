@@ -53,7 +53,7 @@ dev = [
 requires-dist = [
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "mcp", extras = ["cli"], specifier = ">=2.0.0" },
-    { name = "play-store-scraper-ng", specifier = ">=0.1.8" },
+    { name = "play-store-scraper-ng", specifier = ">=0.1.9" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.23.0" },
     { name = "pytest-mock", marker = "extra == 'dev'", specifier = ">=3.12.0" },
@@ -406,15 +406,15 @@ wheels = [
 
 [[package]]
 name = "play-store-scraper-ng"
-version = "0.1.8"
+version = "0.1.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/69/4a/16d4316f516e7cc4634085ab7faa46175cdedc2fae807ea84ce98e1f2cf3/play_store_scraper_ng-0.1.8.tar.gz", hash = "sha256:72da642c887bca493c4e0e85815bc78feb08a7f40db5e608756cdf6cfbec9f61", size = 20645, upload-time = "2026-08-08T18:48:13.775Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8e/cb/347e500dd0a9ab0f6ed734b13f71b043956fe8a3cd14afca7e770e79cef0/play_store_scraper_ng-0.1.9.tar.gz", hash = "sha256:355151a77cffff60436e3409ed31d5c4bb67fb2209807c60f465abe1ddbc036f", size = 21385, upload-time = "2026-10-10T11:30:35.061Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/95/df/1663d5fa33c4d080644de0e996dcb7fe3463e5dfc0f0a504591696732878/play_store_scraper_ng-0.1.8-py3-none-any.whl", hash = "sha256:b1397e2059833689c2ea46b2ef29468b982f8200b40c749eb8654fdf5ac7b5e0", size = 19477, upload-time = "2026-08-08T18:48:12.465Z" },
+    { url = "https://files.pythonhosted.org/packages/06/2c/a487e8c32651d1854873e7548af745ed667c06820098566d59ed3731762d/play_store_scraper_ng-0.1.9-py3-none-any.whl", hash = "sha256:806466afabbf36cdbd1087dc8f723028cbecfa150dffbcfafc883329ee3ad922", size = 20085, upload-time = "2026-10-10T11:30:33.836Z" },
 ]
 
 [[package]]

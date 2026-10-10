@@ -6,7 +6,7 @@ requires-python = ">=3.14"
 dependencies = [
     "httpx>=0.28.1",
     "mcp[cli]>=2.0.0",
-    "play-store-scraper-ng>=0.1.8",
+    "play-store-scraper-ng>=0.1.9",
 ]
 
 [project.optional-dependencies]
